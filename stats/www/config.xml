@@ -2,10 +2,10 @@
 <widget id="ch.rugbywuerenlos.stats" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>RugbyStats</name>
     <description>
-        Hello World sample application that responds to the deviceready event.
+        Phonegap App to display rugby statistics.
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+    <author email="info@platzh1rsch.ch" href="http://platzh1rsch.ch">
+        Platzh1rsch
     </author>
     <feature name="http://api.phonegap.com/1.0/device" />
     <preference name="permissions" value="none" />

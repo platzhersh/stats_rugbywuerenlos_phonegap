@@ -73,4 +73,8 @@ var app = {
 			xmlhttp.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 			xmlhttp.send();
 		}
+		
+	clearPlayers: function() {
+		document.getElementById("players").innerHTML = "";
+	}
 };

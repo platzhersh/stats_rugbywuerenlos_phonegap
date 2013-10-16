@@ -45,26 +45,30 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
-    }
-	
+    },	
 	getPlayers: function() {
-		    var xmlhttp;
+	    var xmlhttp;
+		console.log("Before Ajax call");
 
-    if (window.XMLHttpRequest) {
-        // code for IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp = new XMLHttpRequest();
-    } else {
-        // code for IE6, IE5
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            document.getElementById("players").innerHTML = xmlhttp.responseText;
-			}
+		if (window.XMLHttpRequest) {
+			// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else {
+			// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 		}
 
-		xmlhttp.open("GET", "http://stats.rugbywuerenlos.ch/REST/players", true);
-		xmlhttp.send();
-	}
+		xmlhttp.onreadystatechange = function() {
+		console.log("readystatechange "+xmlhttp.readyState+", http status: "+xmlhttp.status);
+			if (xmlhttp.readyState == 4) {
+				console.log("change players div");
+				alert(xmlhttp.responseText);
+				document.getElementById("players").innerHTML = xmlhttp.responseText;
+				}
+			}
+			
+			xmlhttp.open("GET", "http://stats.rugbywuerenlos.ch/REST/players", true);
+			xmlhttp.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+			xmlhttp.send();
+		}
 };

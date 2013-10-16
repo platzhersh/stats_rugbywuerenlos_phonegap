@@ -72,7 +72,7 @@ var app = {
 			xmlhttp.open("GET", "http://stats.rugbywuerenlos.ch/REST/players", true);
 			xmlhttp.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 			xmlhttp.send();
-		}
+		},
 		
 	clearPlayers: function() {
 		document.getElementById("players").innerHTML = "";

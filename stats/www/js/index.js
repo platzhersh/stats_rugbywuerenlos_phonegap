@@ -46,6 +46,9 @@ var app = {
 
         console.log('Received Event: ' + id);
     },	
+	
+	// JSON Ajax call to stats.rugbywuerenlos.ch
+	// seems to work on phone, but does not locally
 	getPlayers: function() {
 	    var xmlhttp;
 		console.log("Before Ajax call");
@@ -62,7 +65,6 @@ var app = {
 		console.log("readystatechange "+xmlhttp.readyState+", http status: "+xmlhttp.status);
 			if (xmlhttp.readyState == 4) {
 				console.log("change players div");
-				alert(xmlhttp.responseText);
 				document.getElementById("players").innerHTML = xmlhttp.responseText;
 				}
 			}

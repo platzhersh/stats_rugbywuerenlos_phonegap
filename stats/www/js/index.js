@@ -47,6 +47,14 @@ var app = {
         console.log('Received Event: ' + id);
     },	
 	
+	// Sorts Array by subkey
+	sortBySubKey: function(array, key, subkey) {
+		return array.sort(function(a, b) {
+			var x = a[key][subkey]; var y = b[key][subkey];
+			return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+		});
+	},
+	
 	// JSON Ajax call to stats.rugbywuerenlos.ch
 	// seems to work on phone, but does not locally
 	getPlayers: function() {
@@ -65,7 +73,14 @@ var app = {
 		console.log("readystatechange "+xmlhttp.readyState+", http status: "+xmlhttp.status);
 			if (xmlhttp.readyState == 4) {
 				console.log("change players div");
-				document.getElementById("players").innerHTML = xmlhttp.responseText;
+				var o = JSON.parse(xmlhttp.responseText);
+				var os = sortBySubKey(o,'fields','firstName');
+				
+				document.getElementById("players").innerHTML = "<ul>";
+				for (var i = 0; i < os.length; i++) {
+					document.getElementById("players").innerHTML += "<li>"+os[i].fields.firstName+" "+os[i].fields.lastName+" ("+os[i].fields.position+")</li>";
+				}
+				document.getElementById("players").innerHTML += "</ul>";
 				}
 			}
 			

@@ -74,7 +74,7 @@ var app = {
 			if (xmlhttp.readyState == 4) {
 				console.log("change players div");
 				var o = JSON.parse(xmlhttp.responseText);
-				var os = sortBySubKey(o,'fields','firstName');
+				var os = app.sortBySubKey(o,'fields','firstName');
 				
 				document.getElementById("players").innerHTML = "<ul>";
 				for (var i = 0; i < os.length; i++) {

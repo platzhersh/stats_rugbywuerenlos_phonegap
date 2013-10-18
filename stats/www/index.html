@@ -28,29 +28,34 @@
     </head>
     <body>
         <div class="app">
+		<!--
             <h1>PhoneGap</h1>
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received">Device is Ready</p>
             </div>
 			<br/>
+		-->
+		<hr />
 			<p>
-				<button class="btn btn-default btn-lg" onClick="app.getPlayers();">
+				<button class="btn btn-danger btn-lg btn-block" onClick="app.getPlayers();">
 				<span>Get Players</span>
 				</button>
 			</p>
 			<p>
-				<button class="btn btn-default btn-lg" onClick="app.getSeasons();">
+				<button class="btn btn-danger btn-lg btn-block" onClick="app.getSeasons();">
 				<span>Get Seasons</span>
 				</button>
 			</p>
 			<p>
-				<button class="btn btn-default btn-lg" onClick="app.getGames();">
+				<button class="btn btn-danger btn-lg btn-block" onClick="app.getGames();">
 				<span>Get Games</span>
 				</button>
 			</p>
-			<br/><br/>
+			<hr />
+			
 			<div id="players">#Players</div>
+			<hr />
         </div>
         <script type="text/javascript" src="phonegap.js"></script>
         <script type="text/javascript" src="js/index.js"></script>

@@ -26,7 +26,7 @@ body {
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     background-color:#ffffff;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-    font-size:14px;
+    font-size:18px;
     height:100%;
     margin:0px;
     padding:0px;
@@ -45,16 +45,6 @@ body {
     padding:200px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
     margin: auto;  /* offset vertical: half of image height and text area height */
                                    /* offset horizontal: half of text area width */
-}
-
-/* Landscape layout (with min-width) */
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
-    .app {
-        background-position:left center;
-        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
-        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
-                                      /* offset horizontal: half of image width and text area width */
-    }
 }
 
 h1 {

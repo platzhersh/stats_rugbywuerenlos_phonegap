@@ -122,7 +122,7 @@ var app = {
 		},
 		
 		// get json array of seasons
-		getGames: function() {
+		getSeasons: function() {
 	    var xmlhttp;
 
 		if (window.XMLHttpRequest) {

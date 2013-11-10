@@ -64,6 +64,10 @@ var app = {
 		$.getJSON(url, function(jsonp){
 			var os = app.sortBySubKey(jsonp,'fields','firstName');
 					
+			// cache seasons
+			var dataToStore = JSON.stringify(os);
+			localStorage.setItem('players', dataToStore);		
+			
 			document.getElementById("players").innerHTML = "<ul>";
 			for (var i = 0; i < os.length; i++) {
 				document.getElementById("players").innerHTML += "<li>"+os[i].fields.firstName+" "+os[i].fields.lastName+" ("+os[i].fields.position+")</li>";
@@ -78,6 +82,10 @@ var app = {
 		var url = "http://stats.rugbywuerenlos.ch/jsonp/games?callback=?";
 		$.getJSON(url, function(jsonp){
 			var os = app.sortBySubKey(jsonp,'fields','date');
+			
+			// cache games
+			var dataToStore = JSON.stringify(os);
+			localStorage.setItem('games', dataToStore);
 				
 			document.getElementById("players").innerHTML = "<ul>";
 			for (var i = 0; i < os.length; i++) {
@@ -94,6 +102,7 @@ var app = {
 		$.getJSON(url, function(jsonp){
 			var os = app.sortBySubKey(jsonp,'fields','start');
 				
+				// cache seasons
 				var dataToStore = JSON.stringify(os);
 				localStorage.setItem('seasons', dataToStore);
 				

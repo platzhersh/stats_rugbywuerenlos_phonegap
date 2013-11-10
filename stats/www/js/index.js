@@ -59,97 +59,50 @@ var app = {
 	// seems to work on phone, but does not locally
 	// get json array of all players
 	getPlayers: function() {
-	    var xmlhttp;
-		console.log("Before Ajax call");
-
-		if (window.XMLHttpRequest) {
-			// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp = new XMLHttpRequest();
-		} else {
-			// code for IE6, IE5
-			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-
-		xmlhttp.onreadystatechange = function() {
-		console.log("readystatechange "+xmlhttp.readyState+", http status: "+xmlhttp.status);
-			if (xmlhttp.readyState == 4) {
-				console.log("change players div");
-				var o = JSON.parse(xmlhttp.responseText);
-				var os = app.sortBySubKey(o,'fields','firstName');
-				
-				document.getElementById("players").innerHTML = "<ul>";
-				for (var i = 0; i < os.length; i++) {
-					document.getElementById("players").innerHTML += "<li>"+os[i].fields.firstName+" "+os[i].fields.lastName+" ("+os[i].fields.position+")</li>";
-				}
-				document.getElementById("players").innerHTML += "</ul>";
-				}
+	
+	  var url = "http://stats.rugbywuerenlos.ch/jsonp/players?callback=?";
+		$.getJSON(url, function(jsonp){
+			var os = app.sortBySubKey(jsonp,'fields','firstName');
+					
+			document.getElementById("players").innerHTML = "<ul>";
+			for (var i = 0; i < os.length; i++) {
+				document.getElementById("players").innerHTML += "<li>"+os[i].fields.firstName+" "+os[i].fields.lastName+" ("+os[i].fields.position+")</li>";
 			}
-			
-			xmlhttp.open("GET", "http://stats.rugbywuerenlos.ch/REST/players", true);
-			xmlhttp.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-			xmlhttp.send();
+			document.getElementById("players").innerHTML += "</ul>";
+			});
 		},
 		
 		// get json array of all games
 		getGames: function() {
-	    var xmlhttp;
-
-		if (window.XMLHttpRequest) {
-			// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp = new XMLHttpRequest();
-		} else {
-			// code for IE6, IE5
-			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-
-		xmlhttp.onreadystatechange = function() {
-		console.log("readystatechange "+xmlhttp.readyState+", http status: "+xmlhttp.status);
-			if (xmlhttp.readyState == 4) {
-				var o = JSON.parse(xmlhttp.responseText);
-				var os = app.sortBySubKey(o,'fields','date');
+		
+		var url = "http://stats.rugbywuerenlos.ch/jsonp/games?callback=?";
+		$.getJSON(url, function(jsonp){
+			var os = app.sortBySubKey(jsonp,'fields','date');
 				
-				document.getElementById("players").innerHTML = "<ul>";
-				for (var i = 0; i < os.length; i++) {
-					document.getElementById("players").innerHTML += "<li>"+os[i].fields.date+": "+os[i].fields.opponent+"</li>";
-				}
-				document.getElementById("players").innerHTML += "</ul>";
-				}
+			document.getElementById("players").innerHTML = "<ul>";
+			for (var i = 0; i < os.length; i++) {
+				document.getElementById("players").innerHTML += "<li>"+os[i].fields.date+": "+os[i].fields.opponent+"</li>";
 			}
-			
-			xmlhttp.open("GET", "http://stats.rugbywuerenlos.ch/REST/games", true);
-			xmlhttp.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-			xmlhttp.send();
+			document.getElementById("players").innerHTML += "</ul>";
+			});
 		},
 		
 		// get json array of seasons
 		getSeasons: function() {
-	    var xmlhttp;
-
-		if (window.XMLHttpRequest) {
-			// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp = new XMLHttpRequest();
-		} else {
-			// code for IE6, IE5
-			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-
-		xmlhttp.onreadystatechange = function() {
-		console.log("readystatechange "+xmlhttp.readyState+", http status: "+xmlhttp.status);
-			if (xmlhttp.readyState == 4) {
-				var o = JSON.parse(xmlhttp.responseText);
-				var os = app.sortBySubKey(o,'fields','start');
+		
+		var url = "http://stats.rugbywuerenlos.ch/jsonp/seasons?callback=?";
+		$.getJSON(url, function(jsonp){
+			var os = app.sortBySubKey(jsonp,'fields','start');
+				
+				var dataToStore = JSON.stringify(os);
+				localStorage.setItem('seasons', dataToStore);
 				
 				document.getElementById("players").innerHTML = "<ul>";
 				for (var i = 0; i < os.length; i++) {
 					document.getElementById("players").innerHTML += "<li>"+os[i].fields.start+"/"+os[i].fields.start+1+"</li>";
 				}
 				document.getElementById("players").innerHTML += "</ul>";
-				}
-			}
-			
-			xmlhttp.open("GET", "http://stats.rugbywuerenlos.ch/REST/seasons", true);
-			xmlhttp.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-			xmlhttp.send();
+			});
 		},
 		
 	clearPlayers: function() {

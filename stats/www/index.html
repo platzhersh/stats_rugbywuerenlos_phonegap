@@ -24,9 +24,25 @@
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="js/sidr-package-1.2.1/stylesheets/jquery.sidr.light.css" />
         <title>RugbyStats</title>
     </head>
     <body>
+
+	
+ 
+	<div id="sidr">
+	<!-- Your content -->
+	<ul>
+		<li class="active"><a href="#">Home</a></li>
+		<li><a href="#" onClick="app.getGames();">Spielplan</a></li>
+		<li><a href="#" onClick="app.getGames();">Ergebnisse</a></li>
+		<li><a href="#" onClick="app.getPlayers();">Topscorer</a></li>
+		<li>&nbsp;</li>
+		<li><a href="#" onClick="window.open('http://stats.rugbywuerenlos.ch', '_system', 'location=no,toolbar=no');">Swiss Rugby Stats</a></li>
+	</ul>
+	</div>	
+	
         <div class="app">
 		<!--
             <h1>PhoneGap</h1>
@@ -37,26 +53,13 @@
 			<br/>
 		-->
 		<hr />
+		
 			<p>
-				<button class="btn btn-danger btn-lg btn-block" onClick="app.getPlayers();">
-				<span>Get Players</span>
-				</button>
+				<a id="simple-menu" href="#sidr"><button id="simple-menu" class="btn btn-danger btn-lg btn-block">
+				<span>Men&uuml;</span>
+				</button></a>
 			</p>
-			<p>
-				<button class="btn btn-danger btn-lg btn-block" onClick="app.getSeasons();">
-				<span>Get Seasons</span>
-				</button>
-			</p>
-			<p>
-				<button class="btn btn-danger btn-lg btn-block" onClick="app.getGames();">
-				<span>Get Games</span>
-				</button>
-			</p>
-			<p>
-				<button class="btn btn-danger btn-lg btn-block" onClick="window.open('http://stats.rugbywuerenlos.ch', '_system', 'location=no,toolbar=no');">
-				<span>Swiss Rugby Stats</span>
-				</button>
-			</p>
+			
 			<hr />
 			
 			<div id="players">&lt; Press a button &gt;</div>
@@ -66,8 +69,13 @@
         <script type="text/javascript" src="phonegap.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
 		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="js/sidr-package-1.2.1/jquery.sidr.min.js"></script>
         <script type="text/javascript">
-            app.initialize();
+            $(document).ready(function() {
+				$('#simple-menu').sidr();
+				console.log("yeah");
+				app.initialize();
+			});
         </script>
     </body>
 </html>

@@ -34,6 +34,7 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+		console.log("device ready");
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -59,14 +60,18 @@ var app = {
 	// seems to work on phone, but does not locally
 	// get json array of all players
 	getPlayers: function() {
+		
+		console.log("getPlayers called");
 	
-	  var url = "http://stats.rugbywuerenlos.ch/jsonp/players?callback=?";
+		var url = "http://stats.rugbywuerenlos.ch/jsonp/players?callback=?";
+	  
 		$.getJSON(url, function(jsonp){
 			var os = app.sortBySubKey(jsonp,'fields','firstName');
 					
 			// cache seasons
 			var dataToStore = JSON.stringify(os);
-			localStorage.setItem('players', dataToStore);		
+			localStorage.setItem('players', dataToStore);
+			console.log("localStorage set");			
 			
 			document.getElementById("players").innerHTML = "<ul>";
 			for (var i = 0; i < os.length; i++) {
@@ -79,42 +84,48 @@ var app = {
 		// get json array of all games
 		getGames: function() {
 		
-		var url = "http://stats.rugbywuerenlos.ch/jsonp/games?callback=?";
-		$.getJSON(url, function(jsonp){
-			var os = app.sortBySubKey(jsonp,'fields','date');
+			console.log("getGames called");
 			
-			// cache games
-			var dataToStore = JSON.stringify(os);
-			localStorage.setItem('games', dataToStore);
+			var url = "http://stats.rugbywuerenlos.ch/jsonp/games?callback=?";
+			$.getJSON(url, function(jsonp){
+				var os = app.sortBySubKey(jsonp,'fields','date');
 				
-			document.getElementById("players").innerHTML = "<ul>";
-			for (var i = 0; i < os.length; i++) {
-				document.getElementById("players").innerHTML += "<li>"+os[i].fields.date+": "+os[i].fields.opponent+"</li>";
-			}
-			document.getElementById("players").innerHTML += "</ul>";
+				// cache games
+				var dataToStore = JSON.stringify(os);
+				localStorage.setItem('games', dataToStore);
+					
+				document.getElementById("players").innerHTML = "<ul>";
+				for (var i = 0; i < os.length; i++) {
+					document.getElementById("players").innerHTML += "<li>"+os[i].fields.date+": "+os[i].fields.opponent+"</li>";
+				}
+				document.getElementById("players").innerHTML += "</ul>";
 			});
 		},
 		
 		// get json array of seasons
 		getSeasons: function() {
 		
-		var url = "http://stats.rugbywuerenlos.ch/jsonp/seasons?callback=?";
-		$.getJSON(url, function(jsonp){
-			var os = app.sortBySubKey(jsonp,'fields','start');
-				
-				// cache seasons
-				var dataToStore = JSON.stringify(os);
-				localStorage.setItem('seasons', dataToStore);
-				
-				document.getElementById("players").innerHTML = "<ul>";
-				for (var i = 0; i < os.length; i++) {
-					document.getElementById("players").innerHTML += "<li>"+os[i].fields.start+"/"+os[i].fields.start+1+"</li>";
-				}
-				document.getElementById("players").innerHTML += "</ul>";
+			console.log("getSeasons called");
+		
+			var url = "http://stats.rugbywuerenlos.ch/jsonp/seasons?callback=?";
+			$.getJSON(url, function(jsonp){
+				var os = app.sortBySubKey(jsonp,'fields','start');
+					
+					// cache seasons
+					var dataToStore = JSON.stringify(os);
+					localStorage.setItem('seasons', dataToStore);
+					console.log("localStorage set");
+					
+					document.getElementById("players").innerHTML = "<ul>";
+					for (var i = 0; i < os.length; i++) {
+						document.getElementById("players").innerHTML += "<li>"+os[i].fields.start+"/"+os[i].fields.start+1+"</li>";
+					}
+					document.getElementById("players").innerHTML += "</ul>";
 			});
 		},
 		
 	clearPlayers: function() {
+		console.log("clearPlayers called");
 		document.getElementById("players").innerHTML = "";
 	}
 };

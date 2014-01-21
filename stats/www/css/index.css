@@ -26,29 +26,33 @@ body {
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     background-color:#ffffff;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-    font-size:18px;
+    font-size:24px;
     height:100%;
     margin:0px;
     padding:0px;
     text-transform:uppercase;
     width:100%;
     text-align: center;
+	overflow-x: none;
 }
+html { overflow-x: none; }
 
 /* Portrait layout (default) */
 .app {
-    background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
+    /* 170px x 200px
+	background:url(../img/logo.png) no-repeat center top; 
+	*/
     position:relative;             /* position in the center of the screen */
     top: 20px;
-    width:270px;                   /* text area width */
+    width:90%;                   /* text area width */
     text-align:center;
-    padding:200px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
+    padding: 0;     /* image height is 200px (bottom 20px are overlapped with text) */
     margin: auto;  /* offset vertical: half of image height and text area height */
                                    /* offset horizontal: half of text area width */
 }
 
 h1 {
-    font-size:24px;
+    font-size:34px;
     font-weight:normal;
     margin:0px;
     overflow:visible;
@@ -91,3 +95,6 @@ h1 {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+a:hover .btn-lg { text-decoration: none !important; }
+.sidr ul li, .btn-lg { font-size: 24px; }
+.sidr ul li, .sidr ul li:hover, .sidr ul li.active { line-height: 70px; }

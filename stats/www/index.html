@@ -43,7 +43,7 @@
 	</ul>
 	</div>	
 		<p>
-			<a id="simple-menu" href="#sidr"><button id="simple-menu" class="btn btn-danger btn-lg btn-block">
+			<a id="simple-menu" href="#sidr"><button class="btn btn-danger btn-lg btn-block">
 			<span>Men&uuml;</span>
 			</button></a>
 		</p>
@@ -58,12 +58,15 @@
 			<br/>
 		-->
 		<hr />
-					
-			<hr />
+
+			<div><h1 id="title">Home</h1></div>
+		
+		<hr />
 			
-			<div id="players">&lt; Press a button &gt;</div>
-			<hr />
-			version 0.1
+			
+		<div id="players">&lt; Press a button &gt;</div>
+		<hr />
+		version 0.1
         </div>
         <script type="text/javascript" src="phonegap.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
@@ -72,6 +75,7 @@
         <script type="text/javascript">
             $(document).ready(function() {
 				$('#simple-menu').sidr();
+				$('div#sidr li a').sidr();
 				console.log("yeah");
 				app.initialize();
 			});

@@ -64,7 +64,9 @@ var app = {
 		console.log("getPlayers called");
 	
 		var url = "http://stats.rugbywuerenlos.ch/jsonp/players?callback=?";
-	  
+		
+		document.getElementById("title").innerHTML = "Topscorer";
+		
 		$.getJSON(url, function(jsonp){
 			var os = app.sortBySubKey(jsonp,'fields','firstName');
 					
@@ -85,7 +87,7 @@ var app = {
 		getGames: function() {
 		
 			console.log("getGames called");
-			
+			document.getElementById("title").innerHTML = "Games";	
 			var url = "http://stats.rugbywuerenlos.ch/jsonp/games?callback=?";
 			$.getJSON(url, function(jsonp){
 				var os = app.sortBySubKey(jsonp,'fields','date');

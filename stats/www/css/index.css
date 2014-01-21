@@ -96,5 +96,6 @@ h1 {
     -webkit-animation:fade 3000ms infinite;
 }
 a:hover .btn-lg { text-decoration: none !important; }
+.btn-lg { line-height: 50px; border: none; }
 .sidr ul li, .btn-lg { font-size: 24px; }
 .sidr ul li, .sidr ul li:hover, .sidr ul li.active { line-height: 70px; }

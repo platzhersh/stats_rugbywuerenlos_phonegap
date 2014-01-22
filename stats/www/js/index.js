@@ -88,7 +88,6 @@ var app = {
 		getGames: function() {
 		
 			console.log("getGames called");
-			document.getElementById("title").innerHTML = "Games";	
 			var url = "http://stats.rugbywuerenlos.ch/jsonp/games?callback=?";
 			$.getJSON(url, function(jsonp){
 				var os = app.sortBySubKey(jsonp,'fields','date');
@@ -96,14 +95,42 @@ var app = {
 				// cache games
 				var dataToStore = JSON.stringify(os);
 				localStorage.setItem('games', dataToStore);
-					
-				document.getElementById("players").innerHTML = "<ul>";
-				for (var i = 0; i < os.length; i++) {
-					document.getElementById("players").innerHTML += "<li>"+os[i].fields.date+": "+os[i].fields.opponent+"</li>";
-				}
-				document.getElementById("players").innerHTML += "</ul>";
 			});
-			$.sidr('close');
+		},
+		// get json array of all results
+		getResults: function() {
+		
+			console.log("getResults called");
+			document.getElementById("title").innerHTML = "Ergebnisse";	
+			app.getGames();
+			
+			var games = JSON.parse(localStorage.getItem('games'));			
+			document.getElementById("players").innerHTML = "<ul>";
+			for (var i = 0; i < games.length; i++) {
+				if (games[i].fields.pointsO != null) {
+					document.getElementById("players").innerHTML += "<li>"+games[i].fields.date+": "+games[i].fields.opponent+"</li>";
+				}
+			}
+			document.getElementById("players").innerHTML += "</ul>";
+		$.sidr('close');
+		},
+		
+		// get json array of all results
+		getGameplan: function() {
+		
+			console.log("getGameplan called");
+			document.getElementById("title").innerHTML = "Spielplan";	
+			app.getGames();
+			
+			var games = JSON.parse(localStorage.getItem('games'));			
+			document.getElementById("players").innerHTML = "<ul>";
+			for (var i = 0; i < games.length; i++) {
+				if (games[i].fields.pointsO == null) {
+					document.getElementById("players").innerHTML += "<li>"+games[i].fields.date+": "+games[i].fields.opponent+"</li>";
+				}
+			}
+			document.getElementById("players").innerHTML += "</ul>";
+		$.sidr('close');
 		},
 		
 		// get json array of seasons

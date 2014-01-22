@@ -35,8 +35,8 @@
 	<!-- Your content -->
 	<ul>
 		<li class="active"><a href="#">Home</a></li>
-		<li><a href="#" onClick="app.getGames();">Spielplan</a></li>
-		<li><a href="#" onClick="app.getGames();">Ergebnisse</a></li>
+		<li><a href="#" onClick="app.getGameplan();">Spielplan</a></li>
+		<li><a href="#" onClick="app.getResults();">Ergebnisse</a></li>
 		<li><a href="#" onClick="app.getPlayers();">Topscorer</a></li>
 		<li>&nbsp;</li>
 		<li><a href="#" onClick="window.open('http://stats.rugbywuerenlos.ch', '_system', 'location=no,toolbar=no');">Swiss Rugby Stats</a></li>
@@ -73,7 +73,9 @@
 		<script type="text/javascript" src="js/sidr-package-1.2.1/jquery.sidr.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
-				$('.app').sidr('close');
+				$('body').on('click', function() {
+					$.sidr('close');
+				});
 				$('#simple-menu').sidr();
 				/*$('div#sidr li a').sidr();*/
 				

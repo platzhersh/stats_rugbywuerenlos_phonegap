@@ -81,6 +81,7 @@ var app = {
 			}
 			document.getElementById("players").innerHTML += "</ul>";
 			});
+			$.sidr('close');
 		},
 		
 		// get json array of all games
@@ -102,6 +103,7 @@ var app = {
 				}
 				document.getElementById("players").innerHTML += "</ul>";
 			});
+			$.sidr('close');
 		},
 		
 		// get json array of seasons
@@ -124,6 +126,7 @@ var app = {
 					}
 					document.getElementById("players").innerHTML += "</ul>";
 			});
+			$.sidr('close');
 		},
 		
 	clearPlayers: function() {

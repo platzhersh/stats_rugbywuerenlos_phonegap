@@ -99,3 +99,16 @@ a:hover .btn-lg { text-decoration: none !important; }
 .btn-lg { line-height: 50px; border: none; }
 .sidr ul li, .btn-lg { font-size: 24px; }
 .sidr ul li, .sidr ul li:hover, .sidr ul li.active { line-height: 70px; }
+
+
+#players ul { list-style: none; padding: 0; }
+#players li {
+	list-style: none; 
+	padding: 0; 
+	line-height: 70px;
+	width: 100%;
+	border-bottom: 1px solid #eeeeee;
+	}
+#players li:nth-child(even){
+	background-color: #efefef;
+}

@@ -68,14 +68,15 @@
 		<hr />
 		version 0.1
         </div>
-        <script type="text/javascript" src="phonegap.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
 		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 		<script type="text/javascript" src="js/sidr-package-1.2.1/jquery.sidr.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
+				$('.app').sidr('close');
 				$('#simple-menu').sidr();
-				$('div#sidr li a').sidr();
+				/*$('div#sidr li a').sidr();*/
+				
 				console.log("yeah");
 				app.initialize();
 			});

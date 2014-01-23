@@ -56,8 +56,58 @@ var app = {
 		});
 	},
 	
+	// parse Date
+	parseDate: function(input) {
+		var parts1 = input.split('-');
+		var parts2 = parts1[2].split('T');
+		var parts3 = parts2[1].split(':');
+		// new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
+		return { "year" : parts1[0], "month" : parts1[1], "day" : parts2[0], "hour" : parts3[0], "min" : parts3[1], "s" : parts3[2] };
+	},
+	
 	// JSON Ajax call to stats.rugbywuerenlos.ch
-	// seems to work on phone, but does not locally
+	
+	// helper function to call the API
+	getJson: function(model, sortby) {
+		var url = "http://stats.rugbywuerenlos.ch/jsonp/"+model+"?callback=?";
+		$.getJSON(url, function(jsonp){
+		var os = app.sortBySubKey(jsonp,'fields',sortby);
+		
+		// cache games
+		var dataToStore = JSON.stringify(os);
+		localStorage.setItem(model, dataToStore);
+	});
+	},
+	
+	// get games
+	getGames: function() {
+		console.log("getGames called");
+		app.getJson('games', 'date');
+	},
+	// get json array of all games
+	getPoints: function() {
+		console.log("getPoints called");
+		app.getJson('points', 'game');
+	},
+	getPointTypes: function() {
+		console.log("getPointTypes called");
+		app.getJson('pointtypes', 'name');
+	},
+	
+	// get json array of all games
+	getPoints: function() {
+	
+		console.log("getPoints called");
+		var url = "http://stats.rugbywuerenlos.ch/jsonp/points?callback=?";
+		$.getJSON(url, function(jsonp){
+			var os = app.sortBySubKey(jsonp,'fields','date');
+			
+			// cache games
+			var dataToStore = JSON.stringify(os);
+			localStorage.setItem('points', dataToStore);
+		});
+	},
+	
 	// get json array of all players
 	getPlayers: function() {
 		
@@ -84,31 +134,34 @@ var app = {
 			$.sidr('close');
 		},
 		
-		// get json array of all games
-		getGames: function() {
-		
-			console.log("getGames called");
-			var url = "http://stats.rugbywuerenlos.ch/jsonp/games?callback=?";
-			$.getJSON(url, function(jsonp){
-				var os = app.sortBySubKey(jsonp,'fields','date');
-				
-				// cache games
-				var dataToStore = JSON.stringify(os);
-				localStorage.setItem('games', dataToStore);
-			});
-		},
 		// get json array of all results
 		getResults: function() {
 		
 			console.log("getResults called");
 			document.getElementById("title").innerHTML = "Ergebnisse";	
 			app.getGames();
+			app.getPoints();
+			app.getPointTypes();
 			
-			var games = JSON.parse(localStorage.getItem('games'));			
+			var games = JSON.parse(localStorage.getItem('games'));
+			var ptypes = JSON.parse(localStorage.getItem('pointtypes'));
+			var date, points, pointsRCW, html, f;
 			document.getElementById("players").innerHTML = "<ul>";
-			for (var i = 0; i < games.length; i++) {
+			for (var i = games.length-1; i >= 0; i--) {
 				if (games[i].fields.pointsO != null) {
-					document.getElementById("players").innerHTML += "<li>"+games[i].fields.date+": "+games[i].fields.opponent+"</li>";
+					date = app.parseDate(games[i].fields.date);
+					pointsRCW = 0;
+					html = "<li>"+date.day+"."+date.month+"."+date.year+" - "+games[i].fields.opponent+" - ";
+					points = JSON.parse(localStorage.getItem('points'));
+					for (var j = 0; j < points.length; j++) {
+						if (points[j].fields.game == games[i].pk) {
+						f = function(element) { return element.pk == points[j].fields.pointType; };
+							console.log(games[i].fields.opponent+" "+points[j].pk+" "+pointsRCW);
+							pointsRCW += ptypes.filter(f)[0].fields.value;
+							}
+					}
+					html += pointsRCW+":"+games[i].fields.pointsO+"</li>"
+					document.getElementById("players").innerHTML += html;
 				}
 			}
 			document.getElementById("players").innerHTML += "</ul>";
@@ -124,9 +177,11 @@ var app = {
 			
 			var games = JSON.parse(localStorage.getItem('games'));			
 			document.getElementById("players").innerHTML = "<ul>";
+			var date;
 			for (var i = 0; i < games.length; i++) {
 				if (games[i].fields.pointsO == null) {
-					document.getElementById("players").innerHTML += "<li>"+games[i].fields.date+": "+games[i].fields.opponent+"</li>";
+					date = app.parseDate(games[i].fields.date);
+					document.getElementById("players").innerHTML += "<li>"+date.day+"."+date.month+"."+date.year+", "+date.hour+":"+date.min+" - "+games[i].fields.opponent+"</li>";
 				}
 			}
 			document.getElementById("players").innerHTML += "</ul>";

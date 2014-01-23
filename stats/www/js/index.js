@@ -20,6 +20,7 @@ var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
+		app.getIndex();
     },
     // Bind Event Listeners
     //
@@ -63,6 +64,12 @@ var app = {
 		var parts3 = parts2[1].split(':');
 		// new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
 		return { "year" : parts1[0], "month" : parts1[1], "day" : parts2[0], "hour" : parts3[0], "min" : parts3[1], "s" : parts3[2] };
+	},
+	
+	getIndex: function() {
+		document.getElementById("title").innerHTML = "Home";
+		document.getElementById("players").innerHTML = "<p>under construction</p>";
+		$.sidr('close');
 	},
 	
 	// JSON Ajax call to stats.rugbywuerenlos.ch

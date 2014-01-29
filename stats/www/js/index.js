@@ -160,7 +160,7 @@ var app = {
 	getTopScorers: function() {
 	
 		console.log("getTopScorers called");
-		app.getTopscorerList();
+		app.getTopScorerList();
 		document.getElementById("title").innerHTML = "Topscorer";
 		var list = JSON.parse(localStorage.getItem('topscorerlist'));
 		var olist = app.sortByKey(list, 'points');

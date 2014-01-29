@@ -49,6 +49,14 @@ var app = {
         console.log('Received Event: ' + id);
     },	
 	
+	// Sorts Array by key
+	sortByKey: function(array, key) {
+		return array.sort(function(a, b) {
+			var x = a[key]; var y = b[key];
+			return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+		});
+	},
+	
 	// Sorts Array by subkey
 	sortBySubKey: function(array, key, subkey) {
 		return array.sort(function(a, b) {
@@ -101,122 +109,157 @@ var app = {
 		app.getJson('pointtypes', 'name');
 	},
 	
-	// get json array of all games
-	getPoints: function() {
-	
-		console.log("getPoints called");
-		var url = "http://stats.rugbywuerenlos.ch/jsonp/points?callback=?";
-		$.getJSON(url, function(jsonp){
-			var os = app.sortBySubKey(jsonp,'fields','date');
-			
-			// cache games
-			var dataToStore = JSON.stringify(os);
-			localStorage.setItem('points', dataToStore);
-		});
+	getPlayers: function() {
+		console.log("getPointTypes called");
+		app.getJson('players', 'firstName');
 	},
 	
-	// get json array of all players
-	getPlayers: function() {
+	getTopScorerList: function() {
+		console.log("getTopScorerList called");
+		app.getPlayers();
+		app.getPoints();
+		app.getPointTypes();
 		
-		console.log("getPlayers called");
+		var players = JSON.parse(localStorage.getItem('players'));
+		var points = JSON.parse(localStorage.getItem('points'));
+		var ptypes = JSON.parse(localStorage.getItem('pointtypes'));
+		var tid = 1; var pid = 5; var cid = 3; var did = 4;
+		var pts, tries, penalties, conversions, dropgoals;
+
+		var json = "["; 
+		for (var i = 0; i < players.length; i++) {
+			
+			pts = tries = penalties = conversions = dropgoals = 0;
+			
+			for (var j = 0; j < points.length; j++) {
+				if (players[i].pk == points[j].fields.player) {
+					switch (points[j].fields.pointType) {
+						case tid: tries++; pts += 5; break;
+						case pid: penalties++; pts += 3; break;
+						case cid: conversions++; pts += 2; break;
+						case did: dropgoals++; pts += 3; break;
+					}
+				}
+			}
+			if (pts > 0) {
+				if (json !== "[") json += ",";
+				json += '{ "firstName" : "' +players[i].fields.firstName+
+					'", "lastName" : "'+players[i].fields.lastName+
+					'", "points" : '+pts+
+					', "tries" : '+tries+
+					', "conversions" : '+conversions+
+					', "penalties" : '+penalties+
+				"}";
+			}
+		}
+		json += "]";
+		localStorage.setItem('topscorerlist', json);
+	},
 	
-		var url = "http://stats.rugbywuerenlos.ch/jsonp/players?callback=?";
-		
+	// get json array of all games
+	getTopScorers: function() {
+	
+		console.log("getTopScorers called");
 		document.getElementById("title").innerHTML = "Topscorer";
+		var list = JSON.parse(localStorage.getItem('topscorerlist'));
+		var olist = app.sortByKey(list, 'points');
 		
+		var html =  "<table><thead><tr>" +
+		"<th>Name</th>"+
+		"<th><span class='mobile'>Pts.</span><span class='nomobile'>Punkte</span></th>"+
+		"<th><span class='mobile'>Tr.</span><span class='nomobile'>Tries</span></th>"+
+		"<th><span class='mobile'>Conv.</span><span class='nomobile'>Conversions</span></th>"+
+		"<th><span class='mobile'>Pen.</span><span class='nomobile'>Penalties</span></th>"+
+		"</thead><tbody>"; 
+		for (var i = olist.length-1; i >= 0; i--) {
+			html += "<tr><td><span class='nomobile'>"+olist[i].firstName+"</span><span class='mobile'>"+olist[i].firstName.substring(0,1)+".</span> "+olist[i].lastName+"</td>"+
+			"<td>"+olist[i].points+"</td>"+
+			"<td>"+olist[i].tries+"</td>"+
+			"<td>"+olist[i].conversions+"</td>"+
+			"<td>"+olist[i].penalties+"</td>"+
+			"</tr>";
+		}
+		html += "</tbody></table>";
+		document.getElementById("players").innerHTML = html;
+		$.sidr('close');
+	},
+	
+	// get json array of all results
+	getResults: function() {
+	
+		console.log("getResults called");
+		document.getElementById("title").innerHTML = "Ergebnisse";	
+		app.getGames();
+		app.getPoints();
+		app.getPointTypes();
+		
+		var games = JSON.parse(localStorage.getItem('games'));
+		var ptypes = JSON.parse(localStorage.getItem('pointtypes'));
+		var date, points, pointsRCW, html, f;
+		document.getElementById("players").innerHTML = "<ul>";
+		for (var i = games.length-1; i >= 0; i--) {
+			if (games[i].fields.pointsO != null) {
+				date = app.parseDate(games[i].fields.date);
+				pointsRCW = 0;
+				html = "<li>"+date.day+"."+date.month+"."+date.year+" - "+games[i].fields.opponent+" - ";
+				points = JSON.parse(localStorage.getItem('points'));
+				for (var j = 0; j < points.length; j++) {
+					if (points[j].fields.game == games[i].pk) {
+					f = function(element) { return element.pk == points[j].fields.pointType; };
+						console.log(games[i].fields.opponent+" "+points[j].pk+" "+pointsRCW);
+						pointsRCW += ptypes.filter(f)[0].fields.value;
+						}
+				}
+				html += pointsRCW+":"+games[i].fields.pointsO+"</li>"
+				document.getElementById("players").innerHTML += html;
+			}
+		}
+		document.getElementById("players").innerHTML += "</ul>";
+	$.sidr('close');
+	},
+	
+	// get json array of all results
+	getGameplan: function() {
+	
+		console.log("getGameplan called");
+		document.getElementById("title").innerHTML = "Spielplan";	
+		app.getGames();
+		
+		var games = JSON.parse(localStorage.getItem('games'));			
+		document.getElementById("players").innerHTML = "<ul>";
+		var date;
+		for (var i = 0; i < games.length; i++) {
+			if (games[i].fields.pointsO == null) {
+				date = app.parseDate(games[i].fields.date);
+				document.getElementById("players").innerHTML += "<li>"+date.day+"."+date.month+"."+date.year+", "+date.hour+":"+date.min+" - "+games[i].fields.opponent+"</li>";
+			}
+		}
+		document.getElementById("players").innerHTML += "</ul>";
+	$.sidr('close');
+	},
+	
+	// get json array of seasons
+	getSeasons: function() {
+	
+		console.log("getSeasons called");
+	
+		var url = "http://stats.rugbywuerenlos.ch/jsonp/seasons?callback=?";
 		$.getJSON(url, function(jsonp){
-			var os = app.sortBySubKey(jsonp,'fields','firstName');
-					
-			// cache seasons
-			var dataToStore = JSON.stringify(os);
-			localStorage.setItem('players', dataToStore);
-			console.log("localStorage set");			
-			
-			document.getElementById("players").innerHTML = "<ul>";
-			for (var i = 0; i < os.length; i++) {
-				document.getElementById("players").innerHTML += "<li>"+os[i].fields.firstName+" "+os[i].fields.lastName+" ("+os[i].fields.position+")</li>";
-			}
-			document.getElementById("players").innerHTML += "</ul>";
-			});
-			$.sidr('close');
-		},
-		
-		// get json array of all results
-		getResults: function() {
-		
-			console.log("getResults called");
-			document.getElementById("title").innerHTML = "Ergebnisse";	
-			app.getGames();
-			app.getPoints();
-			app.getPointTypes();
-			
-			var games = JSON.parse(localStorage.getItem('games'));
-			var ptypes = JSON.parse(localStorage.getItem('pointtypes'));
-			var date, points, pointsRCW, html, f;
-			document.getElementById("players").innerHTML = "<ul>";
-			for (var i = games.length-1; i >= 0; i--) {
-				if (games[i].fields.pointsO != null) {
-					date = app.parseDate(games[i].fields.date);
-					pointsRCW = 0;
-					html = "<li>"+date.day+"."+date.month+"."+date.year+" - "+games[i].fields.opponent+" - ";
-					points = JSON.parse(localStorage.getItem('points'));
-					for (var j = 0; j < points.length; j++) {
-						if (points[j].fields.game == games[i].pk) {
-						f = function(element) { return element.pk == points[j].fields.pointType; };
-							console.log(games[i].fields.opponent+" "+points[j].pk+" "+pointsRCW);
-							pointsRCW += ptypes.filter(f)[0].fields.value;
-							}
-					}
-					html += pointsRCW+":"+games[i].fields.pointsO+"</li>"
-					document.getElementById("players").innerHTML += html;
+			var os = app.sortBySubKey(jsonp,'fields','start');
+				
+				// cache seasons
+				var dataToStore = JSON.stringify(os);
+				localStorage.setItem('seasons', dataToStore);
+				console.log("localStorage set");
+				
+				document.getElementById("players").innerHTML = "<ul>";
+				for (var i = 0; i < os.length; i++) {
+					document.getElementById("players").innerHTML += "<li>"+os[i].fields.start+"/"+os[i].fields.start+1+"</li>";
 				}
-			}
-			document.getElementById("players").innerHTML += "</ul>";
+				document.getElementById("players").innerHTML += "</ul>";
+		});
 		$.sidr('close');
-		},
-		
-		// get json array of all results
-		getGameplan: function() {
-		
-			console.log("getGameplan called");
-			document.getElementById("title").innerHTML = "Spielplan";	
-			app.getGames();
-			
-			var games = JSON.parse(localStorage.getItem('games'));			
-			document.getElementById("players").innerHTML = "<ul>";
-			var date;
-			for (var i = 0; i < games.length; i++) {
-				if (games[i].fields.pointsO == null) {
-					date = app.parseDate(games[i].fields.date);
-					document.getElementById("players").innerHTML += "<li>"+date.day+"."+date.month+"."+date.year+", "+date.hour+":"+date.min+" - "+games[i].fields.opponent+"</li>";
-				}
-			}
-			document.getElementById("players").innerHTML += "</ul>";
-		$.sidr('close');
-		},
-		
-		// get json array of seasons
-		getSeasons: function() {
-		
-			console.log("getSeasons called");
-		
-			var url = "http://stats.rugbywuerenlos.ch/jsonp/seasons?callback=?";
-			$.getJSON(url, function(jsonp){
-				var os = app.sortBySubKey(jsonp,'fields','start');
-					
-					// cache seasons
-					var dataToStore = JSON.stringify(os);
-					localStorage.setItem('seasons', dataToStore);
-					console.log("localStorage set");
-					
-					document.getElementById("players").innerHTML = "<ul>";
-					for (var i = 0; i < os.length; i++) {
-						document.getElementById("players").innerHTML += "<li>"+os[i].fields.start+"/"+os[i].fields.start+1+"</li>";
-					}
-					document.getElementById("players").innerHTML += "</ul>";
-			});
-			$.sidr('close');
-		},
+	},
 		
 	clearPlayers: function() {
 		console.log("clearPlayers called");

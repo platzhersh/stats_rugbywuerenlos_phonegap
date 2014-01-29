@@ -112,3 +112,17 @@ a:hover .btn-lg { text-decoration: none !important; }
 #players li:nth-child(even){
 	background-color: #efefef;
 }
+
+.mobile { display: none; }
+
+.app table { 
+	width: 100%; 
+	text-align: left;
+	}
+.app table tr:nth-child(even) td {
+	background: #efefef;
+}
+@media screen and (max-width: 650px) {
+	.mobile { display: inline; }
+	.nomobile { display: none; }
+}

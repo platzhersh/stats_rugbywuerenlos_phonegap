@@ -21,6 +21,11 @@ var app = {
     initialize: function() {
         this.bindEvents();
 		app.getIndex();
+		app.getGames();
+		app.getPlayers();
+		app.getPoints();
+		app.getPointTypes();
+		
     },
     // Bind Event Listeners
     //
@@ -79,6 +84,11 @@ var app = {
 		document.getElementById("players").innerHTML = "<p>under construction</p>";
 		$.sidr('close');
 	},
+	getInfo: function() {
+		document.getElementById("title").innerHTML = "Info";
+		document.getElementById("players").innerHTML = "<p>Bugs, Vorschl&auml;ge und Feedback bitte an <a href='mailto:chregi.glatthard@gmail.com'>chregi.glatthard@gmail.com</a></p>";
+		$.sidr('close');
+	},
 	
 	// JSON Ajax call to stats.rugbywuerenlos.ch
 	
@@ -86,12 +96,12 @@ var app = {
 	getJson: function(model, sortby) {
 		var url = "http://stats.rugbywuerenlos.ch/jsonp/"+model+"?callback=?";
 		$.getJSON(url, function(jsonp){
-		var os = app.sortBySubKey(jsonp,'fields',sortby);
+			var os = app.sortBySubKey(jsonp,'fields',sortby);
 		
-		// cache games
-		var dataToStore = JSON.stringify(os);
-		localStorage.setItem(model, dataToStore);
-	});
+			// cache games
+			var dataToStore = JSON.stringify(os);
+			localStorage.setItem(model, dataToStore);
+		});
 	},
 	
 	// get games

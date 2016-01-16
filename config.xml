@@ -1,5 +1,9 @@
-<?xml version='1.0' encoding='utf-8'?>
-<widget id="ch.rugbywuerenlos.stats" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<?xml version="1.0" encoding="UTF-8" ?>
+    <widget xmlns   = "http://www.w3.org/ns/widgets"
+        xmlns:gap   = "http://phonegap.com/ns/1.0"
+        id          = "ch.rugbywuerenlos.stats"
+        versionCode = "13" 
+        version     = "1.0.3" >
     <name>RugbyStats</name>
     <description>
         Phonegap App to display rugby statistics.
@@ -7,9 +11,9 @@
     <author email="info@platzh1rsch.ch" href="http://platzh1rsch.ch">
         Platzh1rsch
     </author>
-    <feature name="http://api.phonegap.com/1.0/device" />
+
     <preference name="permissions" value="none" />
-    <preference name="orientation" value="default" />
+    <preference name="orientation" value="portrait" />
     <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />
@@ -21,8 +25,7 @@
     <preference name="show-splash-screen-spinner" value="true" />
     <preference name="auto-hide-splash-screen" value="true" />
     <preference name="disable-cursor" value="false" />
-    <preference name="android-minSdkVersion" value="7" />
-    <preference name="android-installLocation" value="auto" />
+
     <icon src="icon.png" />
     <icon gap:density="ldpi" gap:platform="android" src="res/icon/android/icon-36-ldpi.png" />
     <icon gap:density="mdpi" gap:platform="android" src="res/icon/android/icon-48-mdpi.png" />
@@ -47,6 +50,7 @@
     <gap:splash gap:platform="ios" height="1024" src="res/screen/ios/screen-ipad-portrait.png" width="768" />
     <gap:splash gap:platform="ios" height="768" src="res/screen/ios/screen-ipad-landscape.png" width="1024" />
     <gap:splash gap:platform="winphone" src="res/screen/windows-phone/screen-portrait.jpg" />
+
     <access origin="http://127.0.0.1*" />
 	<access origin="http://platzh1rsch.ch" subdomains="true" />
 	<access origin="http://stats.rugbywuerenlos.ch" subdomains="true" />
